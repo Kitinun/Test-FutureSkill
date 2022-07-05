@@ -2,11 +2,10 @@
 
 ## Installation
 ```bash
-git clone https://github.com/1000xsquad/interview-demo.git
-cd interview-demo
+git clone git@github.com:Kitinun/Test-FutureSkill.git
+cd Test-FutureSkill
 yarn
 ```
 ## Get started
 ```bash
 yarn start
-```
