@@ -10,8 +10,3 @@ yarn
 ```bash
 yarn start
 ```
-# Test-FutureSkill
-# Test-FutureSkill
-# Test-FutureSkill
-# Test-FutureSkill
-# Test-FutureSkill
