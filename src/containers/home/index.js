@@ -1,7 +1,7 @@
 import React, { Component, useState } from 'react';
 // import { useSelector } from 'react-redux';
 import './home.css'
-import { Layout } from 'antd';
+import { Container } from 'react-bootstrap';
 import BoxCard from '../../components/BoxCard';
 import DataTable from '../../components/DataTable';
 import DataTableNodata from '../../components/DataNoTable';
@@ -9,22 +9,22 @@ import ModalSettingBook from '../../components/Modal/ModalSettingBook';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal)
-const { Content } = Layout;
 
 function Home() {
 
   const [showModalBook, setShowModalBook] = useState(false)
 
   // const state = useSelector(state => state)
-  
   // console.log('state', state);
 
   const initialForm = {
-    mode: ""
+    mode: "",
+    dataBookEdit: {},
+    indexEdit: ''
   }
   const [form, setForm] = useState(initialForm);
 
-  const dataTest = [
+  const [bookList, setBookList] = useState([
     {
       id: 1,
       name: 'Book1',
@@ -35,21 +35,21 @@ function Home() {
     },
     {
       id: 2,
-      name: 'Book1',
+      name: 'Book2',
       date: '05/07/2022',
       name_author: 'Kitinun',
-      time: '14:43',
+      time: '20:16',
       image: ''
     },
     {
       id: 3,
-      name: 'Book1',
-      date: '05/07/2022',
+      name: 'Book3',
+      date: '06/07/2022',
       name_author: 'Kitinun',
-      time: '14:43',
+      time: '10:43',
       image: ''
     }
-  ]
+  ])
 
   const headTitle = [
     {
@@ -75,7 +75,7 @@ function Home() {
     }
   ]
 
-  const deleteBook = async (id) => {
+  const deleteBook = async (index) => {
     MySwal.fire({
       icon: "warning",
       text: "ยืนยันที่จะลบ?",
@@ -84,101 +84,37 @@ function Home() {
       cancelButtonText: "ยกเลิก",
       confirmButtonText: "ตกลง"
     }).then(async (result) => {
-      // if (result.value) {
-      //   try {
-      //     const response = await API.deleteMenu(id)
-      //     if (response.status === 200) {
-      //       MySwal.fire({
-      //         text: "ลบเมนูสำเร็จ",
-      //         icon: "success",
-      //         confirmButtonText: "ตกลง"
-      //       }).then(async (result) => {
-      //         if (result.value) {
-      //           getSettingMenu()
-      //         }
-      //       })
-      //     }
-      //   } catch (error) {
-      //     console.log(error);
-      //     if (error.response && error.response.status === 401) {
-      //       dispatch(logout({ history }))
-      //       MySwal.fire({
-      //         text: "ลบไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
-      //         icon: "warning",
-      //         confirmButtonText: "ตกลง"
-      //       })
-      //     }
-      //     if (error.response && error.response.status === 400) {
-      //       MySwal.fire({
-      //         text: "ลบไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
-      //         icon: "warning",
-      //         confirmButtonText: "ตกลง"
-      //       })
-      //     }
-      //     if (error.response && error.response.status === 500) {
-      //       MySwal.fire({
-      //         text: "ลบไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
-      //         icon: "warning",
-      //         confirmButtonText: "ตกลง"
-      //       })
-      //     }
-      //   }
-      // }
+      bookList.splice(index, 1)
+      setBookList([...bookList])
+      MySwal.fire({
+        icon: "success",
+        text: "ลบสำเร็จ",
+        showCloseButton: true,
+        confirmButtonText: "ตกลง"
+      })
     })
   }
 
   const toSaveBook = async (data) => {
-    // const formData = new FormData();
+    bookList.push(data)
+    setBookList([...bookList])
+    MySwal.fire({
+      icon: "success",
+      text: "บันทึกสำเร็จ",
+      showCloseButton: true,
+      confirmButtonText: "ตกลง"
+    })
+  };
 
-    // formData.append("menu_code", data.menu_code)
-    // formData.append("menu_th_name", data.menu_th_name)
-    // formData.append("menu_en_name", data.menu_en_name)
-    // formData.append("menu_status", data.status)
-
-    // if (data.mode === "edit") {
-    //     formData.append("_method", "PUT")
-    // }
-
-    // setShowModalMenu(false)
-    // // return;
-    // try {
-    //     const response = data.mode === "save" ? await API.saveMenu(formData) : await API.updateMenu(data.idEdit, formData)
-    //     if (response.status === 200) {
-    //         MySwal.fire({
-    //             text: data.mode === "save" ? "บันทึกรายการเมนูสำเร็จ" : "แก้ไขรายการเมนูสำเร็จ",
-    //             icon: "success",
-    //             confirmButtonText: "ตกลง"
-    //         }).then(async (result) => {
-    //             if (result.value) {
-    //                 getSettingMenu()
-    //             }
-    //         })
-    //     }
-    // } catch (error) {
-    //     console.log(error);
-    //     if (error.response && error.response.status === 401) {
-    //         dispatch(logout({ history }))
-    //         MySwal.fire({
-    //             text: "บันทึกไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
-    //             icon: "warning",
-    //             confirmButtonText: "ตกลง"
-    //         })
-    //     }
-    //     if (error.response && error.response.status === 400) {
-    //         MySwal.fire({
-    //             text: "บันทึกไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
-    //             icon: "warning",
-    //             confirmButtonText: "ตกลง"
-    //         })
-    //     }
-    //     if (error.response && error.response.status === 500) {
-    //         MySwal.fire({
-    //             text: "บันทึกไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
-    //             icon: "warning",
-    //             confirmButtonText: "ตกลง"
-    //         })
-    //     }
-    // }
+  const toSaveEdit = async (data, index) => {
+    bookList[index] = data
+    setBookList([...bookList])
+    MySwal.fire({
+      icon: "success",
+      text: "บันทึกสำเร็จ",
+      showCloseButton: true,
+      confirmButtonText: "ตกลง"
+    })
   };
 
   const renderTableBooks = (data) => {
@@ -190,16 +126,21 @@ function Home() {
           <td>{item.date}</td>
           <td>{item.name_author}</td>
           <td>{item.time}</td>
-          <td>{item.image}</td>
+          <td><image src={item.image} />{item.image ? item.image : <span className='text-red'>No Image</span>}</td>
           <td className="manage-width">
             <div className="d-flex justify-content-center border-0 ">
               <button className="btn btn-info mr-2 " onClick={() => {
                 setShowModalBook(true)
-                form.mode = 'edit'
+                setForm({
+                  ...form,
+                  mode: 'edit',
+                  dataBookEdit: item,
+                  indexEdit: i
+                })
               }} >
                 แก้ไข
               </button>
-              <button className="btn btn-danger" onClick={() => deleteBook(item.id)} >
+              <button className="btn btn-danger" onClick={() => deleteBook(i)} >
                 ลบ
               </button>
             </div>
@@ -213,7 +154,7 @@ function Home() {
 
   return (
     <div className="py-3 px-4 mt-2">
-      <Content>
+      <Container>
         <BoxCard className="mb-3 p-2">
           <div className="d-flex align-items-center justify-content-between">
             <h3 className="blod mb-0">รายการหนังสือ</h3>
@@ -229,15 +170,17 @@ function Home() {
 
           <div className="mt-4">
             <DataTable headColumns={headTitle}>
-              {renderTableBooks(dataTest)}
+              {renderTableBooks(bookList)}
             </DataTable>
           </div>
         </BoxCard>
 
         {showModalBook &&
-          <ModalSettingBook show={showModalBook} mode={form.mode} close={() => setShowModalBook(false)} save={(data) => toSaveBook(data)} />
+          <ModalSettingBook show={showModalBook} mode={form.mode} close={() => setShowModalBook(false)} save={(data) => toSaveBook(data)} saveEdit={(data, index) => toSaveEdit(data, index)}
+            bookList={bookList} dataBook={form.dataBookEdit} indexEdit={form.indexEdit}
+          />
         }
-      </Content>
+      </Container>
     </div>
   )
 }

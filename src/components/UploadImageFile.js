@@ -3,7 +3,7 @@ import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 const MySwal = withReactContent(Swal);
 
-function UploadImageFile({ title, files, onChange, star, type, invalid, handleInvalid, typeSave, classLabel, position, name, mode }) {
+function UploadImageFile({ title, files, onChange, star, type, invalid, handleInvalid, classLabel, position, name, mode }) {
 
     const initialForm = {
         file: "",
@@ -11,7 +11,7 @@ function UploadImageFile({ title, files, onChange, star, type, invalid, handleIn
         check: false
     }
     const [form, setForm] = useState(initialForm);
-    
+
     useEffect(() => {
         if (mode == "edit") {
             setForm({ ...form, imagePreviewUrl: files })
@@ -27,28 +27,11 @@ function UploadImageFile({ title, files, onChange, star, type, invalid, handleIn
         let file = e.target.files[0];
 
         if (fileTypeArray.includes(file.type)) {
-            // console.log("file", file);
-            // if (file.size < 1000000) {
             reader.onloadend = () => {
                 setForm({ ...form, file: file, imagePreviewUrl: reader.result });
             };
             reader.readAsDataURL(file);
-
-            onChange(file);
-            // } else {
-            //     MySwal.fire({
-            //         icon: "warning",
-            //         type: "warning",
-            //         confirmButtonText: "ตกลง",
-            //         text: "กรุณาเลือกไฟล์ที่มีขนาดไม่เกิน 10 MB",
-            //     }).then(result => {
-            //         if (result.value) {
-            //             reader.onloadend = () => {
-            //                 setForm({ ...form, file: "", imagePreviewUrl: "", check: false });
-            //             };
-            //         }
-            //     })
-            // }
+            onChange(file, reader.result);
         }
     }
 
@@ -58,28 +41,12 @@ function UploadImageFile({ title, files, onChange, star, type, invalid, handleIn
 
     const renderImage = () => {
         if (form.imagePreviewUrl) {
-            if (type == "profile") {
-                return (
-                    <div>
-                        <img className="img-fluid rounded-circle border" src={form.imagePreviewUrl} alt="profile" />
-                        <img className="img-fluid border-0 icon-del cursor-p ml-1" src={"/svg/del.svg"} alt="del" onClick={() => delImg()} />
-                    </div>
-                )
-            } else if (type == "fileName") {
-                return (
-                    <span className="mr-1">
-                        {files.name}
-                        <img className="border-0 icon-del cursor-p ml-1" src={"/svg/del.svg"} alt="del" onClick={() => delImg()} />
-                    </span>
-                )
-            } else if (type == "img") {
-                return (
-                    <div className="d-flex align-items-center">
-                        <img className="img-fluid border" src={form.imagePreviewUrl} alt="img-file" />
-                        <img className="border-0 icon-del cursor-p ml-1" src={"/svg/del.svg"} alt="del" onClick={() => delImg()} />
-                    </div>
-                )
-            }
+            return (
+                <div className="d-flex align-items-center">
+                    <img className="img-fluid border" src={form.imagePreviewUrl} alt="img-file" />
+                    <img className="border-0 icon-del cursor-p ml-1" src={"/svg/del.svg"} alt="del" onClick={() => delImg()} />
+                </div>
+            )
         }
     }
 

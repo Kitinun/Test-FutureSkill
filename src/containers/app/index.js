@@ -23,7 +23,7 @@ const App = () => (
       <Route exact path="/about-us" component={About} />
     </main>
     <Footer className="d-flex justify-content-center footer-container mt-3" style={{ textAlign: 'center' }}>
-      Interview ©2018 Created by Kitinun
+      Interview ©2022 Created by Kitinun
     </Footer>
   </div>
 )

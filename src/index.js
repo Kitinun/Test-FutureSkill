@@ -8,8 +8,6 @@ import App from './containers/app'
 import './css/bootstrap.min.css';
 import "./css/adminlte.min.css";
 import "./css/overlayScrollbars.min.css";
-import './css/style.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 import 'sanitize.css/sanitize.css'
 import './index.css'

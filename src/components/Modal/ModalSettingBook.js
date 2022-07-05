@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Row, Col, Modal, Form } from 'react-bootstrap';
 import InputDatePicker from '../InputDatePicker';
 import InputText from '../InputText';
 import UploadImageFile from '../UploadImageFile';
+import * as helper from '../../utils/helper';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+const MySwal = withReactContent(Swal)
 
 function ModalSettingBook(props) {
 
@@ -22,7 +26,26 @@ function ModalSettingBook(props) {
     }
     const [invalid, setInvalid] = useState(initInvalidMsg);
 
-    const [imageBook, setImageBook] = useState("")
+    const [imageBook, setImageBook] = useState({
+        file: '',
+        url: ''
+    })
+
+    useEffect(() => {
+        if (props.mode == 'edit') {
+            getDataBook(props.dataBook)
+        }
+    }, [props.mode])
+
+    const getDataBook = (data) => {
+        setForm({
+            ...form,
+            name_book: data.name,
+            date_read: helper.getDateToForm(data.date),
+            author_book: data.name_author,
+            time_read: data.time
+        })
+    }
 
     const handleClose = () => {
         props.close()
@@ -66,7 +89,29 @@ function ModalSettingBook(props) {
 
     const toSaveBook = async () => {
         if (validate()) {
-            props.save(form)
+            MySwal.fire({
+                icon: "warning",
+                text: "ยืนยันที่จะบันทึกใช่หรือไม่?",
+                showCloseButton: true,
+                showCancelButton: true,
+                cancelButtonText: "ยกเลิก",
+                confirmButtonText: "ตกลง"
+            }).then(async (result) => {
+                let data = {
+                    id: props.mode == 'edit' ? props.dataBook.id : props.bookList.length + 1,
+                    name: form.name_book,
+                    date: helper.getDateFormat(form.date_read),
+                    name_author: form.author_book,
+                    time: form.time_read,
+                    image: imageBook.file
+                }
+                if (props.mode == 'edit') {
+                    props.saveEdit(data, props.indexEdit)
+                } else {
+                    props.save(data)
+                }
+                handleClose()
+            })
         }
     };
 
@@ -117,8 +162,8 @@ function ModalSettingBook(props) {
                         />
                     </Col>
                     <Col lg={6} md={6} sm={12} className="mt-4">
-                        <UploadImageFile files={imageBook} type="img" name="รูปปก" position="left"
-                            onChange={(file) => setImageBook(file)}
+                        <UploadImageFile files={imageBook} name="รูปปก" position="left"
+                            onChange={(file, url) => setImageBook({ ...imageBook, file: file, url: url })}
                         />
                     </Col>
                 </Row>
