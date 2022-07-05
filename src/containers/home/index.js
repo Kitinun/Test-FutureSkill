@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import './home.css'
 import { Layout } from 'antd';
 import BoxCard from '../../components/BoxCard';
@@ -15,9 +15,9 @@ function Home() {
 
   const [showModalBook, setShowModalBook] = useState(false)
 
-  const state = useSelector(state => state)
+  // const state = useSelector(state => state)
   
-  console.log('state', state);
+  // console.log('state', state);
 
   const initialForm = {
     mode: ""
