@@ -3,6 +3,8 @@ import { connectRouter, routerMiddleware } from 'connected-react-router'
 import thunk from 'redux-thunk'
 import createHistory from 'history/createBrowserHistory'
 import rootReducer from './modules'
+// import rootReducer from "./redux/reducers";
+import rootSaga from "./redux/sagas";
 
 export const history = createHistory()
 
@@ -28,4 +30,21 @@ export default createStore(
   initialState,
   composedEnhancers
 )
+
+// import { createStore, applyMiddleware } from "redux";
+// import createSagaMiddleware from "redux-saga";
+// import logger from "redux-logger";
+// import rootReducer from "./reducers";
+// import rootSaga from "./sagas";
+
+// const initialiseSagaMiddleware = createSagaMiddleware();
+
+// const store = createStore(
+//   rootReducer,
+//   applyMiddleware(initialiseSagaMiddleware, logger)
+// );
+
+// initialiseSagaMiddleware.run(rootSaga);
+
+// export default store;
 

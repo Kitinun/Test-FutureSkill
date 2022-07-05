@@ -70,8 +70,6 @@ function ModalSettingBook(props) {
         }
     };
 
-    console.log('form', form);
-
     return (
         <Modal
             show={props.show}

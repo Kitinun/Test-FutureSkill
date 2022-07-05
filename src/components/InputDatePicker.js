@@ -10,6 +10,8 @@ import "react-datepicker/dist/react-datepicker.css";
 function InputDatePicker({ title, star, value, placeholder, classLabel, handleChange, invalid, handleInvalid, classFormGroup, disabled,
     maxDate, minDate }) {
 
+    const today = new Date();
+
     const datepickerRef = React.createRef();
 
     const years = range(1927, getYear(new Date()) + 10, 1);
@@ -41,36 +43,27 @@ function InputDatePicker({ title, star, value, placeholder, classLabel, handleCh
         border: "1px solid #dc3545 !important"
     }
 
-    const InputWithButton = React.forwardRef((props, ref) => {
-        return (
-            <InputGroup>
-                <InputGroup.Prepend onClick={props.onClick}>
-                    <InputGroup.Text><img src="/svg/calendar-input.svg" alt="" /></InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control ref={ref} className={invalid ? "is-invalid date-picker" : "date-picker"} placeholder={props.placeholder} onClick={props.onClick} value={props.value} onChange={props.onChange} disabled={props.disabled} readOnly={true} />
-            </InputGroup>
-        );
-    });
-    
     return (
         <Form.Group className={classFormGroup}>
             {title && <Form.Label className={`${classLabel} mb-1`}>{title} <span className="text-danger">{star ? "*" : ""}</span></Form.Label>}
             <InputGroup>
-                <DatePicker selected={value}
-                    dateFormat="dd/MM/yyyy"
-                    locale={th}
-                    disabled={disabled}
+                <DatePicker
+                    selected={value}
                     onChange={(value) => {
                         handleChange(value)
                         if (handleInvalid) {
                             handleInvalid()
                         }
                     }}
-                    ref={datepickerRef}
+                    className="form-control"
+                    minDate={today}
                     placeholderText={placeholder}
-                    minDate={minDate}
-                    maxDate={maxDate}
-                    customInput={<InputWithButton />}
+                    customInput={
+                        <input
+                            type="text"
+                            className={invalid ? "is-invalid date-picker" : "date-picker"}
+                        />
+                    }
                     renderCustomHeader={({
                         date,
                         changeYear,
