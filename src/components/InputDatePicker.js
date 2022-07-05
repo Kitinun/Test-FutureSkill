@@ -10,10 +10,6 @@ import "react-datepicker/dist/react-datepicker.css";
 function InputDatePicker({ title, star, value, placeholder, classLabel, handleChange, invalid, handleInvalid, classFormGroup, disabled,
     maxDate, minDate }) {
 
-    const today = new Date();
-
-    const datepickerRef = React.createRef();
-
     const years = range(1927, getYear(new Date()) + 10, 1);
 
     const months = [
@@ -56,7 +52,8 @@ function InputDatePicker({ title, star, value, placeholder, classLabel, handleCh
                         }
                     }}
                     className="form-control"
-                    minDate={today}
+                    minDate={minDate}
+                    maxDate={maxDate}
                     placeholderText={placeholder}
                     customInput={
                         <input

@@ -9,6 +9,7 @@ import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal)
 
 function ModalSettingBook(props) {
+    const today = new Date();
 
     const initialForm = {
         name_book: '',
@@ -138,7 +139,7 @@ function ModalSettingBook(props) {
                     </Col>
                     <Col lg={6} md={6} sm={12}>
                         <InputDatePicker title="วันที่อ่านจบ" classLabel="normal" placeholder="วัน/เดือน/ปี"
-                            value={form.date_read} star={true}
+                            value={form.date_read} star={true} maxDate={today}
                             handleChange={(value) => setForm({ ...form, date_read: value })}
                             handleInvalid={() => { removeInvalid("date_read") }} invalid={invalid.date_read}
                         />
